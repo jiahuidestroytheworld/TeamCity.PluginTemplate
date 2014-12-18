@@ -2,6 +2,8 @@
   <library name="Agent-Api">
     <CLASSES>
       <root url="jar://$TeamCityDistribution$/devPackage/agent-api.jar!/" />
+      <root url="jar://C:/library/javax.mail-api-1.5.1.jar!/" />
+      <root url="jar://C:/library/openapi-7.0.3.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

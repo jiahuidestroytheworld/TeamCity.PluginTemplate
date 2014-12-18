@@ -14,7 +14,7 @@
           <file>jar://$TeamCityDistribution$/webapps/ROOT/WEB-INF/lib/common-impl.jar!/META-INF/shared-spring-sub-container.xml</file>
           <file>jar://$TeamCityDistribution$/webapps/ROOT/WEB-INF/lib/common-impl.jar!/META-INF/plugin-model-shared-spring.xml</file>
           <file>file://$TeamCityDistribution$/webapps/ROOT/WEB-INF/buildServerSpringWeb.xml</file>
-          <file>file://$MODULE_DIR$/src/META-INF/build-server-plugin-PLUGIN_NAME.xml</file>
+          <file>file://$MODULE_DIR$/src/META-INF/build-server-plugin-emailplugin.xml</file>
           <file>jar://$TeamCityDistribution$/buildAgent/lib/common-impl.jar!/META-INF/per-plugin-shared-spring.xml</file>
           <file>jar://$TeamCityDistribution$/buildAgent/lib/common-impl.jar!/META-INF/plugin-model-shared-spring.xml</file>
           <file>jar://$TeamCityDistribution$/buildAgent/lib/common-impl.jar!/META-INF/shared-spring-sub-container.xml</file>
@@ -24,7 +24,7 @@
     <facet type="web" name="server">
       <configuration>
         <webroots>
-          <root url="file://$MODULE_DIR$/resources" relative="/plugins/SPECIAL_NAME" />
+          <root url="file://$MODULE_DIR$/resources/buildServerResources" relative="/plugins/emailplugin" />
         </webroots>
       </configuration>
     </facet>
