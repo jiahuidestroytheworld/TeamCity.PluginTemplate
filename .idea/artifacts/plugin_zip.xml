@@ -5,7 +5,6 @@
       <element id="archive" name="emailplugin.zip">
         <element id="artifact" artifact-name="plugin" />
       </element>
-      <element id="library" level="project" name="Agent-Api" />
     </root>
   </artifact>
 </component>

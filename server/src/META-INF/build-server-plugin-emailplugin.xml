@@ -12,5 +12,6 @@
   <!-- sample: 
   <bean class="bean class fully qualified name"/>
   -->
-
+<bean class="com.jiahui.emailplugin.EmailPluginRunType" />
+  <bean class="com.jiahui.emailplugin.RunnerRegistrar" />
 </beans>

@@ -23,10 +23,12 @@ import jetbrains.buildServer.RunBuildException;
 import jetbrains.buildServer.agent.*;
 import org.jetbrains.annotations.NotNull;
 
-public class EmailPluginRunner implements AgentBuildRunner, AgentBuildRunnerInfo{
+import static com.jiahui.emailplugin.EmailBean.*;
+
+public class EmailPluginRunner implements AgentBuildRunner, AgentBuildRunnerInfo {
   @NotNull
   public BuildProcess createBuildProcess(@NotNull AgentRunningBuild runningBuild, @NotNull BuildRunnerContext context) throws RunBuildException {
-    return new EmailPluginBuildProcess(runningBuild, context);
+    return new EmailPluginBuildProcess(context);
   }
 
   @NotNull
@@ -36,7 +38,7 @@ public class EmailPluginRunner implements AgentBuildRunner, AgentBuildRunnerInfo
 
   @NotNull
   public String getType() {
-    return "emailplugin";
+    return RUN_TYPE_NAME;
   }
 
   public boolean canRun(@NotNull BuildAgentConfiguration agentConfiguration) {

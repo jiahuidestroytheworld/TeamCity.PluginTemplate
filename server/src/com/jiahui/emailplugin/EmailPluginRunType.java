@@ -20,15 +20,18 @@ package com.jiahui.emailplugin;
  * Created by Jiahui.Chen on 12/18/2014.
  */
 
+import com.intellij.openapi.util.text.StringUtil;
+import jetbrains.buildServer.serverSide.InvalidProperty;
 import jetbrains.buildServer.serverSide.PropertiesProcessor;
 import jetbrains.buildServer.serverSide.RunType;
-import jetbrains.buildServer.serverSide.RunTypeRegistry;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.Map;
+
+import javax.mail.internet.*;
+import java.util.*;
+
 import static com.jiahui.emailplugin.EmailBean.*;
 
 public class EmailPluginRunType extends RunType {
@@ -36,8 +39,7 @@ public class EmailPluginRunType extends RunType {
 
 
 
-  public EmailPluginRunType(final RunTypeRegistry registry, @NotNull final PluginDescriptor descriptor){
-    registry.registerRunType(this);
+  public EmailPluginRunType(@NotNull final PluginDescriptor descriptor){
     myDescriptor = descriptor;
   }
 
@@ -62,19 +64,60 @@ public class EmailPluginRunType extends RunType {
   @Nullable
   @Override
   public PropertiesProcessor getRunnerPropertiesProcessor() {
-    return null;
+    return new PropertiesProcessor() {
+      @NotNull
+      public Collection<InvalidProperty> process(Map<String, String> properties) {
+        List<InvalidProperty> invalidResult = new ArrayList<InvalidProperty>();
+
+        if (StringUtil.isEmptyOrSpaces(properties.get("emailFrom"))) {
+          invalidResult.add(new InvalidProperty("emailFrom", "receiver's email address cannot be empty"));
+        } else {
+          try {
+            InternetAddress emailAddress = new InternetAddress(properties.get("emailFrom"));
+            emailAddress.validate();
+          } catch (AddressException e) {
+            invalidResult.add(new InvalidProperty("emailFrom", "sender's email address format is not correct"));
+          }
+        }
+
+        if (StringUtil.isEmptyOrSpaces(properties.get("emailTo"))) {
+          invalidResult.add(new InvalidProperty("emailTo", "receiver's email address cannot be empty"));
+        } else {
+          String validString = verifyEmailAddress(properties.get("emailTo"));
+          if(validString.length()>0) {
+            invalidResult.add(new InvalidProperty("emailTo", "receiver " + validString));
+          }
+        }
+
+        if (!StringUtil.isEmptyOrSpaces(properties.get("emailCC"))) {
+          String validString = verifyEmailAddress(properties.get("emailCC"));
+          if(validString.length()>0) {
+            invalidResult.add(new InvalidProperty("emailCC", "CC receiver " + validString));
+          }
+        }
+
+        if (!StringUtil.isEmptyOrSpaces(properties.get("emailBCC"))) {
+          String validString = verifyEmailAddress(properties.get("emailBCC"));
+          if(validString.length()>0) {
+            invalidResult.add(new InvalidProperty("emailBCC", "BCC receiver " + validString));
+          }
+        }
+
+        return invalidResult;
+      }
+    };
   }
 
   @Nullable
   @Override
   public String getEditRunnerParamsJspFilePath() {
-    return myDescriptor.getPluginResourcesPath("emailplugin.jsp");
+    return myDescriptor.getPluginResourcesPath("emailpluginedit.jsp");
   }
 
   @Nullable
   @Override
   public String getViewRunnerParamsJspFilePath() {
-    return myDescriptor.getPluginResourcesPath("emailplugin.jsp");
+    return myDescriptor.getPluginResourcesPath("emailpluginview.jsp");
   }
 
   @Nullable
@@ -82,4 +125,26 @@ public class EmailPluginRunType extends RunType {
   public Map<String, String> getDefaultRunnerProperties() {
     return Collections.emptyMap();
   }
+
+  public String verifyEmailAddress(String s) {
+    boolean invalidEmail = false;
+    String[] emailArray = s.split(",");
+    StringBuilder sb = new StringBuilder();
+    for(String emailadd : emailArray) {
+      try {
+        emailadd = emailadd.trim();
+        InternetAddress emailAddress = new InternetAddress(emailadd);
+        emailAddress.validate();
+      } catch (AddressException e) {
+        invalidEmail = true;
+        sb.append(emailadd + ", ");
+      }
+    }
+    if(invalidEmail) {
+      sb.append(" do not have correct format");
+      return sb.toString();
+    }
+    else return "";
+  }
+
 }

@@ -24,7 +24,7 @@
     <facet type="web" name="server">
       <configuration>
         <webroots>
-          <root url="file://$MODULE_DIR$/resources/buildServerResources" relative="/plugins/emailplugin" />
+          <root url="file://$MODULE_DIR$/resources" relative="/plugins/SPECIAL_NAME" />
         </webroots>
       </configuration>
     </facet>
@@ -44,6 +44,6 @@
     <orderEntry type="library" name="Servlet Api" level="project" />
     <orderEntry type="library" name="spring" level="project" />
     <orderEntry type="module" module-name="common" />
+    <orderEntry type="library" name="javax.mail-1.5.2" level="application" />
   </component>
 </module>
-

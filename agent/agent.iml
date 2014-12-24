@@ -24,6 +24,6 @@
     <orderEntry type="library" name="log4j" level="project" />
     <orderEntry type="library" name="Idea-OpenApi" level="project" />
     <orderEntry type="module" module-name="common" />
+    <orderEntry type="library" name="javax.mail-1.5.2" level="application" />
   </component>
 </module>
-
